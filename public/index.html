@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="Upload PDF or DOCX files and ask questions about their contents. Documents are processed locally in your browser."
+    />
+    <title>Document Q&amp;A Chatbot</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/mammoth@1/mammoth.browser.min.js"
+      defer
+    ></script>
+    <script type="module" src="/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">Q&amp;A</div>
+          <div>
+            <h1>Document Q&amp;A Chatbot</h1>
+            <p>Ask questions about your PDF and DOCX files</p>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <span class="pill">Local embeddings</span>
+          <span class="pill">Private by default</span>
+        </div>
+      </header>
+
+      <div class="layout">
+        <aside class="sidebar" aria-label="Document controls">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Documents</h2>
+              <span id="documentCount" class="muted">0 files</span>
+            </div>
+
+            <label id="dropZone" class="drop-zone" for="fileInput">
+              <input
+                id="fileInput"
+                type="file"
+                accept=".pdf,.docx,.doc,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                multiple
+              />
+              <span class="drop-title">Choose files or drop them here</span>
+              <span class="drop-hint">PDF and DOCX, multiple files supported</span>
+            </label>
+
+            <ul id="fileList" class="file-list" aria-live="polite"></ul>
+
+            <div class="button-row">
+              <button id="submitButton" class="button primary" type="button" disabled>
+                Submit your document
+              </button>
+              <button id="clearDocumentsButton" class="button ghost" type="button" disabled>
+                Clear
+              </button>
+            </div>
+
+            <div id="status" class="status" role="status" aria-live="polite">
+              Add a document to get started.
+            </div>
+            <div id="progressWrap" class="progress-wrap" hidden>
+              <div class="progress-track">
+                <div id="progressBar" class="progress-bar"></div>
+              </div>
+            </div>
+
+            <p class="privacy-note">
+              Files are parsed and embedded in your browser. Only the relevant
+              passages and your question are sent to the chat endpoint.
+            </p>
+          </section>
+
+          <section class="panel tips">
+            <h2>Tips</h2>
+            <ul>
+              <li>Use text-based PDFs. Scanned images need OCR first.</li>
+              <li>Ask specific questions for better retrieval.</li>
+              <li>Old binary <code>.doc</code> files are not supported; use <code>.docx</code>.</li>
+            </ul>
+          </section>
+        </aside>
+
+        <main class="chat-panel">
+          <div class="chat-header">
+            <div>
+              <h2>Chat</h2>
+              <p id="chatSubtitle" class="muted">Submit a document to start asking questions.</p>
+            </div>
+            <button id="clearHistoryButton" class="button ghost small" type="button">
+              Clear history
+            </button>
+          </div>
+
+          <div id="messages" class="messages" aria-live="polite" aria-label="Chat history">
+            <div id="emptyState" class="empty-state">
+              <div class="empty-icon" aria-hidden="true">?</div>
+              <h3>Your document chat will appear here</h3>
+              <p>
+                Upload one or more PDF/DOCX files, click
+                <strong>Submit your document</strong>, then ask a question.
+              </p>
+            </div>
+          </div>
+
+          <form id="chatForm" class="composer" autocomplete="off">
+            <label class="sr-only" for="questionInput">Ask a question</label>
+            <textarea
+              id="questionInput"
+              rows="1"
+              placeholder="Ask a question from your document..."
+              disabled
+            ></textarea>
+            <button id="sendButton" class="button primary send" type="submit" disabled>
+              Send
+            </button>
+          </form>
+        </main>
+      </div>
+    </div>
+
+    <noscript>
+      <p class="noscript">This application requires JavaScript.</p>
+    </noscript>
+  </body>
+</html>
